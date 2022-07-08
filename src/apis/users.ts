@@ -6,6 +6,17 @@ interface RequestWithConnection extends Request {
     mysqlConnection: any
 }
 
+router.get('/userInfo', async (request: Request, response: Response) => {
+    const req = request as RequestWithConnection
+    const res = response
+    const { userIdx } = req.params
+
+    const connection = req.mysqlConnection
+    const userData = await connection.run(`SELECT id, name, email FROM users`)
+
+    res.send(userData)
+})
+
 router.post('/signup', async (request: Request, response: Response) => {
     const req = request as RequestWithConnection
     const res = response
@@ -14,7 +25,9 @@ router.post('/signup', async (request: Request, response: Response) => {
     const connection = req.mysqlConnection
     await connection.run(`INSERT INTO users (id, pw, name, birth, email, tel) VALUES (?, ?, ?, ?, ?, ?)`, [id, pw, name, birth, email, tel])
 
-    res.json('success')
+    res.json({
+        message: 'success',
+    })
 })
 
 export default router

@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import { useMysql } from './middlewares/useMysql'
-import router from './apis/post'
+import router from './apis/users'
 
 const app = express()
 const PORT = 3714
